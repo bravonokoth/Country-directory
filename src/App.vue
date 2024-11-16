@@ -1,26 +1,40 @@
+<!-- src/App.vue -->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+   
+
+    <!-- Main Content -->
+    <main class="container mt-5">
+      <!-- Render the component associated with the current route -->
+      <router-view></router-view>
+    </main>
+
+    <!-- Footer (Optional) -->
+    <footer class="app-footer bg-light text-center py-3">
+      <div class="container">
+        <p>&copy; 2023 Country Directory App</p>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+};
 </script>
 
 <style>
+/* Global styles for App.vue */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.app-header {
+  /* Optional styles for header */
+}
+.app-footer {
+  margin-top: auto;
 }
 </style>
