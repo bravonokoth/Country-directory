@@ -76,11 +76,7 @@ Contributions are welcome! If you find any bugs or have suggestions for improvem
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## TODO
 
-- Complete UI styling and layout.
-- Add country data (currently, it's simulated or empty).
-- Implement backend API for fetching country data (coming soon).
 
 ## Acknowledgments
 
