@@ -27,4 +27,9 @@ const app = createApp(App);
 app.use(i18n);    // Use i18n
 app.use(router);  // Use router
 
+// Enable debugging
+app.config.devtools = true;
+app.config.performance = true;
+
+
 app.mount('#app'); // Mount the app to the DOM

@@ -6,7 +6,7 @@
     <div class="mb-4">
       <SearchBar @search="handleSearch" />
       <FilterBar :countries="filteredCountries" @filter="handleFilter" />
-      <button class="btn btn-secondary mt-2" @click="clearFilters">Clear Filters</button> <!-- Clear Filters Button -->
+      <button class="btn btn-secondary mt-2" @click="clearFilters">Clear Filters</button>
     </div>
 
     <!-- Countries Table -->
@@ -16,10 +16,12 @@
     <template v-if="pageCount > 1">
       <Paginate
         :page-count="pageCount"
+        :page-range="3"
+        :margin-pages="2"
         @page-change="handlePageClick"
         :prev-text="'Prev'"
         :next-text="'Next'"
-        :container-class="'pagination'"
+        :container-class="'pagination justify-content-center mt-4'"
         :page-class="'page-item'"
         :page-link-class="'page-link'"
         :prev-class="'page-item'"
@@ -48,9 +50,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal"></button>
           </div>
           <div class="modal-body">
-            <!-- Conditionally render CountryDetails only if selectedCountry is available -->
             <CountryDetails v-if="selectedCountry" :country="selectedCountry" />
-            <p v-else>Loading...</p>  <!-- Optional: display a loading message -->
+            <p v-else>Loading...</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">Close</button>
@@ -59,8 +60,8 @@
       </div>
     </div>
 
-    <!-- Loading Spinner (Optional) -->
-    <div v-if="loading" class="text-center">
+    <!-- Loading Spinner -->
+    <div v-if="loading" class="text-center mt-4">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
@@ -74,7 +75,8 @@ import CountriesTable from '@/components/CountriesTable.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import FilterBar from '@/components/FilterBar.vue';
 import CountryDetails from '@/components/CountryDetails.vue';
-import Paginate from '@hennge/vue3-pagination'; // Correct import for Vue 3
+import Paginate from '@hennge/vue3-pagination';
+
 import { Modal } from 'bootstrap'; // Import Bootstrap's Modal
 
 export default {
@@ -98,7 +100,7 @@ export default {
       selectedCountry: null,
       currentPage: 1,
       perPage: 20,
-      loading: false, // Loading state
+      loading: false,
     };
   },
   created() {
@@ -117,16 +119,14 @@ export default {
   methods: {
     async fetchCountries() {
       try {
-        this.loading = true; // Start loading
-        console.log("Fetching countries...");
+        this.loading = true;
         const response = await CountriesService.getAllCountries();
-        this.countries = response;  // Directly assigning response data
-        console.log("Countries fetched:", this.countries); // Log the fetched countries
+        this.countries = response;
         this.applyFilters(); // Apply filters after data is fetched
       } catch (error) {
         console.error('Error fetching countries:', error);
       } finally {
-        this.loading = false; // Stop loading
+        this.loading = false;
       }
     },
     handleSearch(query) {
@@ -139,7 +139,7 @@ export default {
     },
     applyFilters() {
       let tempCountries = this.countries;
-      
+
       // Apply search filter
       if (this.searchQuery) {
         const lowerQuery = this.searchQuery.toLowerCase();
@@ -147,20 +147,19 @@ export default {
           country.name.common.toLowerCase().includes(lowerQuery)
         );
       }
-      
+
       // Apply region filter
       if (this.filterCriteria.region) {
         tempCountries = tempCountries.filter(country => country.region === this.filterCriteria.region);
       }
-      
+
       // Apply subregion filter
       if (this.filterCriteria.subregion) {
         tempCountries = tempCountries.filter(country => country.subregion === this.filterCriteria.subregion);
       }
-      
+
       this.filteredCountries = tempCountries;
-      console.log("Filtered countries:", this.filteredCountries); // Check the filtered countries
-      this.currentPage = 1; // Reset to first page after applying filters
+      this.currentPage = 1;
     },
     handlePageClick(pageNumber) {
       this.currentPage = pageNumber;
@@ -168,7 +167,6 @@ export default {
     viewDetails(country) {
       if (country) {
         this.selectedCountry = country;
-        // Show the modal using Bootstrap's Modal
         this.$nextTick(() => {
           const modalElement = document.getElementById('countryModal');
           if (modalElement) {
@@ -186,20 +184,36 @@ export default {
         const modal = new Modal(modalElement);
         modal.hide();
       }
-      this.selectedCountry = null; // Clear selected country after closing modal
+      this.selectedCountry = null;
     },
     clearFilters() {
       this.searchQuery = '';
       this.filterCriteria = {
         region: '',
-        subregion: ''
+        subregion: '',
       };
       this.applyFilters();
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.pagination .page-item .page-link {
+  color: #007bff;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #e9ecef;
+}
 </style>

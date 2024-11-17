@@ -12,7 +12,7 @@
     <!-- Footer (Optional) -->
     <footer class="app-footer bg-light text-center py-3">
       <div class="container">
-        <p>&copy; 2023 Country Directory App</p>
+        <p>&copy; 2024 Country Directory App</p>
       </div>
     </footer>
   </div>
